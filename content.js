@@ -10,7 +10,7 @@
         let language = elem.querySelector('span[class="post-code__language"]').textContent.trim().toLowerCase()
         
         navigator.clipboard.writeText(
-          sanatization(content, language)
+          sanatization(content, language).trim();
         );
       });
 
