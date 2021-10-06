@@ -10,7 +10,7 @@
         let language = elem.querySelector('span[class="post-code__language"]').textContent.trim().toLowerCase()
         
         navigator.clipboard.writeText(
-          sanatization(content, language).trim()
+          sanitization(content, language).trim()
         );
       });
 
@@ -33,7 +33,7 @@ function divCreate() {
 }
 
 
-function sanatization(content, language){
+function sanitization(content, language){
   switch(language){
     case 'bash':{
       if(content.indexOf('$') == 0){
