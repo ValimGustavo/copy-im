@@ -50,10 +50,6 @@ function getMessagesCodeType() {
   return document.querySelectorAll('div[class="post-code"]');
 }
 
-function getNumberPost(posts) {
-  return posts.length;
-}
-
 function divCreate() {
   const div = document.createElement("div");
   div.style.width = "40px";
@@ -86,7 +82,7 @@ setInterval(() => {
   console.log('ping')
   posts = document.querySelectorAll('div[class="post-code"]');
   console.log(posts)
-  const postNumber = getNumberPost(posts);
+  const postNumber = posts.length;
 
   if (postNumber != lastUpdatePostNumber) {
     lastUpdatePostNumber = postNumber;
