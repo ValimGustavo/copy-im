@@ -1,23 +1,58 @@
-﻿setInterval(() => {
-  posts = document.querySelectorAll('div[class="post-code"]');
+﻿let lastUpdatePostNumber = 0;
+class Events {
+  events = {};
+
+  add(eventName, cb) {
+    if (this.events[eventName]) {
+      this.events[eventName].push(cb);
+    } else {
+      this.events[eventName] = [cb];
+    }
+  }
+
+  emit(eventName, ...params) {
+    if (this.events[eventName]) {
+      const cbs = this.events[eventName];
+      for (const cb of cbs) {
+        console.log("running callback");
+        cb(...params);
+      }
+    }
+  }
+}
+
+const eventEmitter = new Events();
+
+eventEmitter.add("change", (posts) => {
   posts.forEach((elem) => {
     if (!elem.querySelector('div[data-copy="true"]')) {
       const div = divCreate();
 
       div.addEventListener("click", (event) => {
-        
-        let content = elem.querySelector('div[class="hljs"] > code').textContent 
-        let language = elem.querySelector('span[class="post-code__language"]').textContent.trim().toLowerCase()
-        
-        navigator.clipboard.writeText(
-          sanitization(content, language).trim()
-        );
+        let content = elem.querySelector(
+          'div[class="hljs"] > code'
+        ).textContent;
+
+        let language = elem
+          .querySelector('span[class="post-code__language"]')
+          .textContent.trim()
+          .toLowerCase();
+
+        navigator.clipboard.writeText(sanitization(content, language).trim());
       });
 
       elem.querySelector('span[class="post-code__language"]').append(div);
     }
   });
-}, 1000);
+});
+
+function getMessagesCodeType() {
+  return document.querySelectorAll('div[class="post-code"]');
+}
+
+function getNumberPost(posts) {
+  return posts.length;
+}
 
 function divCreate() {
   const div = document.createElement("div");
@@ -32,12 +67,11 @@ function divCreate() {
   return div;
 }
 
-
-function sanitization(content, language){
-  switch(language){
-    case 'bash':{
-      if(content.indexOf('$') == 0){
-        return content.replace('$', '');
+function sanitization(content, language) {
+  switch (language) {
+    case "bash": {
+      if (content.indexOf("$") == 0) {
+        return content.replace("$", "");
       }
     }
 
@@ -47,3 +81,15 @@ function sanitization(content, language){
     }
   }
 }
+
+setInterval(() => {
+  console.log('ping')
+  posts = document.querySelectorAll('div[class="post-code"]');
+  console.log(posts)
+  const postNumber = getNumberPost(posts);
+
+  if (postNumber != lastUpdatePostNumber) {
+    lastUpdatePostNumber = postNumber;
+    eventEmitter.emit("change", posts);
+  }
+}, 1000);
