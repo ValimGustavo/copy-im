@@ -78,10 +78,26 @@ function sanitization(content, language) {
   }
 }
 
+setTimeout(() => {
+  console.log('AAAAAAAAAAAAAA')
+  input = document.getElementById('post_textbox')
+
+  toggle = new DOMParser().parseFromString('<button type="button" width="250px" height="250px" id="toggleInput" class="style--none post-action">A</button>', 'text/xml').documentElement
+  
+  toggle.addEventListener('click', (e) => {
+   input.disabled = !input.disabled
+   button = document.getElementById('toggleInput')
+   button.innerHTML  = input.disabled ? 'D' : 'A'
+  })
+  
+  actions = document.querySelector('span[class="post-body__actions"]')
+  
+  actions.appendChild(toggle)
+}, 5000)
+
+
 setInterval(() => {
-  console.log('ping')
   posts = document.querySelectorAll('div[class="post-code"]');
-  console.log(posts)
   const postNumber = posts.length;
 
   if (postNumber != lastUpdatePostNumber) {
