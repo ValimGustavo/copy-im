@@ -1,4 +1,5 @@
 ﻿let lastUpdatePostNumber = 0;
+
 class Events {
   events = {};
 
@@ -79,11 +80,11 @@ function sanitization(content, language) {
 }
 
 setTimeout(() => {
-  console.log('AAAAAAAAAAAAAA')
   input = document.getElementById('post_textbox')
-
-  toggle = new DOMParser().parseFromString('<button type="button" width="250px" height="250px" id="toggleInput" class="style--none post-action">A</button>', 'text/xml').documentElement
   
+ 
+  toggle = new DOMParser().parseFromString('<button type="button" width="250px" height="250px" id="toggleInput" class="style--none post-action">D</button>', 'text/xml').documentElement
+
   toggle.addEventListener('click', (e) => {
    input.disabled = !input.disabled
    button = document.getElementById('toggleInput')
@@ -93,7 +94,9 @@ setTimeout(() => {
   actions = document.querySelector('span[class="post-body__actions"]')
   
   actions.appendChild(toggle)
-}, 5000)
+  input.disabled = true;
+  button.innerHTML  = input.disabled ? 'D' : 'A'
+}, 3000)
 
 
 setInterval(() => {
